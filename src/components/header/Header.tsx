@@ -5,7 +5,7 @@ export class Header extends Component {
   render() {
     return (
       <header className="header">
-        <h1>People from Star Wars</h1>
+        <h1 className="title">People from Star Wars</h1>
       </header>
     );
   }

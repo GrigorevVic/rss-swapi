@@ -1,3 +1,4 @@
+import './styles.css';
 import { Component } from 'react';
 import { People } from '../../../types/typs';
 
@@ -16,14 +17,15 @@ export class CardItem extends Component<PeopleItem> {
 
   render() {
     const { people } = this.props;
-    /*
-            <p className="info"> gender: {people.gender}</p>
-        <p className="info">height: {people.height}</p>
-        <p className="info">mass: {people.mass}</p>
-    */
     return (
-      <li className="card" key={people.name}>
-        <p className="name">name: {people.name}</p>
+      <li className="card-container" key={people.name}>
+        <p className="name">Name: {people.name}</p>
+        <p className="height">Height: {people.height}</p>
+        <p className="mass">Mass: {people.mass}</p>
+        <p className="birth_year">Birth year: {people.birth_year}</p>
+        <p className="gender">Gender: {people.gender}</p>
+        <p className="skin_color">Skin color: {people.skin_color}</p>
+        <p className="eye_color">Eye color: {people.eye_color}</p>
       </li>
     );
   }

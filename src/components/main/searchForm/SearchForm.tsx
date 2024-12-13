@@ -1,21 +1,21 @@
 import { Component } from 'react';
 
-interface SearchFormState {
+interface SearchState {
   search: string;
 }
 
-interface SearchFormProps {
+interface SearchProps {
   handleSearch: (search: string) => void;
 }
 
-export class SearchForm extends Component<SearchFormProps, SearchFormState> {
-  constructor(props: SearchFormProps) {
+export class SearchForm extends Component<SearchProps, SearchState> {
+  constructor(props: SearchProps) {
     super(props);
-
+    const savedSearch = localStorage.getItem('searchString') || '';
     this.state = {
-      // searchTerm: getItemFromLocalStorage<string>("searchTerm") ?? "",
-      search: '',
+      search: savedSearch,
     };
+    this.props.handleSearch(this.state.search);
   }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -25,7 +25,7 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    //setItemToLocalStorage('searchTerm', this.state.searchTerm);
+    localStorage.setItem('searchString', this.state.search);
     this.props.handleSearch(this.state.search);
   };
 
@@ -35,7 +35,7 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
         <input
           className="search-input"
           type="text"
-          placeholder=""
+          placeholder="Enter a character name..."
           value={this.state.search}
           onChange={this.handleChange}
         />

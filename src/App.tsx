@@ -31,12 +31,14 @@ export class App extends Component<object, ComponentState> {
 
   render() {
     return (
-      <div>
+      <>
         <Header />
-        <SearchForm handleSearch={this.handleSearch} />
-        <CardList peopleList={this.state.results} />
+        <main className="main">
+          <SearchForm handleSearch={this.handleSearch} />
+          <CardList peopleList={this.state.results} />
+        </main>
         <Footer />
-      </div>
+      </>
     );
   }
 }

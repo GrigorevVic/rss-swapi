@@ -1,3 +1,4 @@
+import './styles.css';
 import { Component } from 'react';
 import { CardItem } from '../cardItem/CardItem';
 import { People } from '../../../types/typs';
@@ -19,7 +20,7 @@ export class CardList extends Component<PeopleList> {
     const { peopleList } = this.props;
 
     return (
-      <ul className="card">
+      <ul className="cards-container">
         {peopleList.map((people: People) => (
           <CardItem people={people} key={people.name} />
         ))}
