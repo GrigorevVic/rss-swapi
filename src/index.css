@@ -15,32 +15,32 @@
 }
   */
 
-  * {
-    margin: 0;
-    padding: 0;
-  }
+* {
+  margin: 0;
+  padding: 0;
+}
 
-  :root {
-    font-family: Inter, system-ui, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    --main-dark: #090033;
-    --transparent-dark: rgba(41, 54, 40, 0.7);
-    --transparent-dark-hover: rgba(41, 54, 40);
-    --border-shadow: rgba(183, 215, 221, 0.5);
-    --main-light: #dff8fa;
-    --accent-blue: #6a71ec;
-    --links: #646cff;
-    --links-hover: #a0a5ff;
-    --main-buttons: #646cff;
-    --main-buttons-hover: #a0a5ff;
-    --accent-red: #ff0000;
-    font-size: 10px;
-  }
+:root {
+  font-family: Inter, system-ui, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --main-dark: #090033;
+  --transparent-dark: rgba(41, 54, 40, 0.7);
+  --transparent-dark-hover: rgba(41, 54, 40);
+  --border-shadow: rgba(183, 215, 221, 0.5);
+  --main-light: #dff8fa;
+  --accent-blue: #6a71ec;
+  --links: #646cff;
+  --links-hover: #a0a5ff;
+  --main-buttons: #646cff;
+  --main-buttons-hover: #a0a5ff;
+  --accent-red: #ff0000;
+  font-size: 10px;
+}
 
 body {
   display: flex;

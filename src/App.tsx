@@ -30,12 +30,19 @@ export class App extends Component<object, ComponentState> {
   };
 
   render() {
+    const isLoading = this.state.isLoading;
     return (
       <>
         <Header />
         <main className="main">
           <SearchForm handleSearch={this.handleSearch} />
-          <CardList peopleList={this.state.results} />
+          {isLoading ? (
+            <div className="loader-container">
+              <div className="loader" />
+            </div>
+          ) : (
+            <CardList peopleList={this.state.results} />
+          )}
         </main>
         <Footer />
       </>

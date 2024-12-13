@@ -10,7 +10,7 @@ export class Footer extends Component {
           target="_blank"
           rel="noopener noreferrer"
         >
-          GrigorevVic GitHub
+          GitHub: GrigorevVic
         </a>
       </footer>
     );
