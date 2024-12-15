@@ -1,6 +1,6 @@
 import './styles.css';
 import { Component } from 'react';
-import { People } from '../../../types/typs';
+import { People } from '../../../types/types';
 
 interface PeopleItem {
   people: People;
@@ -15,10 +15,18 @@ export class CardItem extends Component<PeopleItem> {
     };
   }
 
+  handleClick = async () => {
+    console.log('card details');
+  };
+
   render() {
     const { people } = this.props;
     return (
-      <li className="card-container" key={people.name}>
+      <li
+        className="card-container"
+        key={people.name}
+        onClick={this.handleClick}
+      >
         <p className="name">Name: {people.name}</p>
         <p className="height">Height: {people.height}</p>
         <p className="mass">Mass: {people.mass}</p>

@@ -1,7 +1,7 @@
 import './styles.css';
 import { Component } from 'react';
 import { CardItem } from '../cardItem/CardItem';
-import { People } from '../../../types/typs';
+import { People } from '../../../types/types';
 
 interface PeopleList {
   peopleList: People[];
