@@ -5,14 +5,16 @@
   min-height: 100vh;
 }
 
-.main, .error {
+.main,
+.error {
   flex-grow: 1;
   padding: 20px;
   color: red;
   font-size: 2rem;
 }
 
-.loader-container, .no-results {
+.loader-container,
+.no-results {
   position: fixed;
   top: 50%;
   left: 50%;
