@@ -11,7 +11,6 @@ export class CardList extends Component<PeopleList> {
   constructor(props: PeopleList) {
     super(props);
     this.state = {
-      // searchTerm: getItemFromLocalStorage<string>("searchTerm") ?? "",
       peopleList: '',
     };
   }

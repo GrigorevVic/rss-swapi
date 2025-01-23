@@ -10,7 +10,6 @@ export class CardItem extends Component<PeopleItem> {
   constructor(props: PeopleItem) {
     super(props);
     this.state = {
-      // searchTerm: getItemFromLocalStorage<string>("searchTerm") ?? "",
       peopleList: '',
     };
   }
