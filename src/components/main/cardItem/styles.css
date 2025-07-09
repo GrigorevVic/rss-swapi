@@ -1,0 +1,32 @@
+.card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--border-shadow);
+  border-radius: 20px;
+  background-color: var(--transparent-dark);
+  padding: 10px;
+  width: 250px;
+  height: 300px;
+  cursor: pointer;
+  color: rgb(197, 220, 240);
+  margin: 6px;
+  transition: 0.5s;
+}
+
+.card-container:hover {
+  background-color: var(--transparent-dark-hover);
+  box-shadow: 3px 3px 3px 3px var(--border-shadow);
+  transition: 0.5s;
+}
+
+.card-container p:not(:first-child) {
+  font-size: 1.5rem;
+  padding: 5px;
+}
+
+.name {
+  font-size: 2rem;
+  padding: 10px;
+  color: rgb(232, 246, 248);
+}

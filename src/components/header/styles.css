@@ -1,0 +1,10 @@
+.header {
+  width: 100%;
+  min-height: 90px;
+  color: white;
+}
+
+.title {
+  font-size: 4rem;
+  padding: 10px;
+}
