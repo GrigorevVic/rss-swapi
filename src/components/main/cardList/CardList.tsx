@@ -20,9 +20,10 @@ export class CardList extends Component<PeopleList> {
 
     return (
       <ul className="cards-container">
-        {peopleList.map((people: People) => (
-          <CardItem people={people} key={people.name} />
-        ))}
+        {peopleList.map(
+          (people: People, index) =>
+            index < 10 && <CardItem people={people} key={people.name} />
+        )}
       </ul>
     );
   }
