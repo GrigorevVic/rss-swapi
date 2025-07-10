@@ -14,7 +14,6 @@ export function CardItem({ people }: PeopleItem) {
     newSearchParams.set('details', people.id);
     return `?${newSearchParams}`;
   };
-  console.log(people);
 
   return (
     <li className="card-container" key={people.name}>

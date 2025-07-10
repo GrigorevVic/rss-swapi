@@ -1,32 +1,25 @@
 import '@testing-library/jest-dom';
-import { beforeEach, describe, expect, test } from 'vitest';
+import { describe, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { SearchForm } from './SearchForm';
 
-describe('SearchForm Component', () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  test('saving the entered value to localstorage', () => {
-    const fakeName = 'FakeName';
-    render(<SearchForm handleSearch={() => {}} />);
-    const searchButton = screen.getByText('Search');
-    const inputElement = screen.getByPlaceholderText(
-      'Enter a character name...'
+describe('Pagination Component', () => {
+  it('renders next and prev buttons', () => {
+    render(
+      <MemoryRouter>
+        <SearchForm handleSearch={() => {}} />
+      </MemoryRouter>
     );
-    fireEvent.change(inputElement, { target: { value: fakeName } });
-    fireEvent.click(searchButton);
-    expect(localStorage.getItem('searchString')).toBe(fakeName);
+
+    expect(screen.getByText('Search')).toBeInTheDocument();
+    expect(screen.getByText('Error')).toBeInTheDocument();
   });
 
-  test('test click button-Error', () => {
-    render(<SearchForm handleSearch={() => {}} />);
-    const errorButton = screen.getByText('Error');
-    try {
-      fireEvent.click(errorButton);
-    } catch (error) {
-      expect(error).toEqual(new Error('An error has occurred'));
-    }
+  it('throws an error when Error button is clicked', () => {
+    render(<SearchForm handleSearch={vi.fn()} />);
+    const errorButton = screen.getByRole('button', { name: /Error/i });
+
+    expect(() => fireEvent.click(errorButton)).toThrow('An error has occurred');
   });
 });

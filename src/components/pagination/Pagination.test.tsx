@@ -3,20 +3,12 @@ import { describe, expect, test } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Pagination } from './Pagination';
-import { ApiResponse } from '../../types/types';
 
 describe('Pagination Component', () => {
   test('renders next and prev buttons', () => {
-    const response: ApiResponse = {
-      count: 82,
-      previous: 'http://example.com/api/characters?page=1',
-      next: 'http://example.com/api/characters?page=3',
-      results: [],
-    };
-
     render(
       <MemoryRouter>
-        <Pagination response={response} handlePagination={() => {}} />
+        <Pagination pageNumber={20} currentPage={1} onPageChange={() => {}} />
       </MemoryRouter>
     );
 
@@ -25,16 +17,9 @@ describe('Pagination Component', () => {
   });
 
   test('disables prev button', () => {
-    const response: ApiResponse = {
-      count: 82,
-      previous: null,
-      next: 'https://swapi.dev/api/people/?page=2',
-      results: [],
-    };
-
     render(
       <MemoryRouter>
-        <Pagination response={response} handlePagination={() => {}} />
+        <Pagination pageNumber={20} currentPage={1} onPageChange={() => {}} />
       </MemoryRouter>
     );
 
@@ -43,16 +28,9 @@ describe('Pagination Component', () => {
   });
 
   test('disables next button', () => {
-    const response: ApiResponse = {
-      count: 82,
-      previous: 'https://swapi.dev/api/people/?page=8',
-      next: null,
-      results: [],
-    };
-
     render(
       <MemoryRouter>
-        <Pagination response={response} handlePagination={() => {}} />
+        <Pagination pageNumber={20} currentPage={5} onPageChange={() => {}} />
       </MemoryRouter>
     );
 
@@ -61,21 +39,14 @@ describe('Pagination Component', () => {
   });
 
   test('click next button', () => {
-    const response: ApiResponse = {
-      count: 82,
-      previous: null,
-      next: 'https://swapi.dev/api/people/?page=2',
-      results: [],
-    };
-
     render(
       <MemoryRouter>
-        <Pagination response={response} handlePagination={() => {}} />
+        <Pagination pageNumber={20} currentPage={5} onPageChange={() => {}} />
       </MemoryRouter>
     );
 
     const nextButton = screen.getByText('Next');
     fireEvent.click(nextButton);
-    expect(screen.getByText('Page: 1')).toBeInTheDocument();
+    expect(screen.getByText('Page: 5')).toBeInTheDocument();
   });
 });

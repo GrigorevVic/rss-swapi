@@ -16,7 +16,8 @@ export function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [{ errorMsg }, setErrorMsg] = useState({ errorMsg: '' });
   const [isLoading, setIsLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState('1');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [savedSearch, setSavedSearch] = useLocalStorage();
 
   const handleSearch = async (search: string) => {
     const queryString = search
@@ -36,16 +37,15 @@ export function MainPage() {
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(String(page));
+    setCurrentPage(page);
   };
 
-  const [savedSearch] = useLocalStorage();
+  const handleSearchChange = (search: string) => {
+    setCurrentPage(1);
+    setSavedSearch(search);
+  };
 
   useEffect(() => {
-    const search = searchParams.get('search');
-    const page = searchParams.get('page') ?? '1';
-    console.log(page, search, '****************************');
-    // setCurrentPage(page);
     handleSearch(savedSearch);
   }, [savedSearch, currentPage]);
 
@@ -55,13 +55,15 @@ export function MainPage() {
 
   const params = Boolean(searchParams.get('details'));
 
-  console.log(currentPage);
+  const filtred = response?.filter((item, index) => {
+    return Math.ceil(Number(index + 1) / 10) === currentPage;
+  });
 
   return (
     <>
       <Header />
       <main className="main">
-        <SearchForm handleSearch={handleSearch} />
+        <SearchForm handleSearch={handleSearchChange} />
         {isLoading && response ? (
           <>
             <Pagination
@@ -70,7 +72,7 @@ export function MainPage() {
               currentPage={currentPage}
             />
             <div className="wrapper">
-              <CardList peopleList={response} />
+              <CardList peopleList={filtred} />
               {params && <Outlet />}
             </div>
           </>
