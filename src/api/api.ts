@@ -1,31 +1,24 @@
-import { ApiResponse, People } from '../types/types';
+interface CharacterData {
+  name: string;
+}
 
-//const url = 'https://swapi.py4e.com/api';
-const url = 'https://swapi.dev/api';
+const url = 'https://swapi-server.vercel.app/people';
 
-export const getSearchData = async (search: string): Promise<ApiResponse> => {
-  const queryString = search ? `?search=${search}` : '';
-  const response = await fetch(`${url}/people/${queryString}`);
+export const getData = async (search: string) => {
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Error fetching data');
   }
   const result = await response.json();
-  return result;
+  const searched = result.filter((item: CharacterData) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return searched;
 };
 
-export const getCharacterListData = async (
-  page: number
-): Promise<ApiResponse> => {
-  const response = await fetch(`${url}/people/?page=${String(page)}`);
-  if (!response.ok) {
-    throw new Error('Error fetching data');
-  }
-  const result = await response.json();
-  return result;
-};
-
-export const getDataById = async (id: string): Promise<People> => {
-  const response = await fetch(`${url}/people/${id}`);
+export const getDataById = async (id: string) => {
+  const response = await fetch(`${url}/${id}`);
   if (!response.ok) {
     throw new Error('Error fetching data');
   }

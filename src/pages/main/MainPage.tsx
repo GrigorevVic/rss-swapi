@@ -1,28 +1,31 @@
 import './styles.css';
 import { SearchForm } from '../../components/searchForm/SearchForm';
+import { People } from '../../types/types';
 import { CardList } from '../../components/cardList/CardList';
-import { getSearchData, getCharacterListData } from '../../api/api';
+import { getData } from '../../api/api';
 import { useState, useEffect } from 'react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { Pagination } from '../../components/pagination/Pagination';
-import { ApiResponse } from '../../types/types';
 import { useSearchParams, Outlet } from 'react-router-dom';
 import { Loader } from '../../components/loader/Loader';
 import { Header } from '../../components/header/Header';
 import { Footer } from '../../components/footer/Footer';
 
 export function MainPage() {
-  const [response, setResponse] = useState<ApiResponse>();
+  const [response, setResponse] = useState<People[]>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [{ errorMsg }, setErrorMsg] = useState({ errorMsg: '' });
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState('1');
 
   const handleSearch = async (search: string) => {
-    const queryString = search ? `?search=${search}` : `?page=1`;
+    const queryString = search
+      ? `?page=${currentPage}&search=${search}`
+      : `?page=${currentPage}`;
     setSearchParams(queryString);
     setIsLoading(false);
     try {
-      const response = await getSearchData(search);
+      const response = await getData(search);
       setResponse(response);
       setIsLoading(true);
     } catch (e) {
@@ -32,33 +35,19 @@ export function MainPage() {
     }
   };
 
-  const handlePagination = async (page: number) => {
-    setIsLoading(false);
-    try {
-      const response = await getCharacterListData(page);
-      setResponse(response);
-      setSearchParams(`?page=${page}`);
-      setIsLoading(true);
-    } catch (e) {
-      setErrorMsg({ errorMsg: (e as Error).message });
-    } finally {
-      setIsLoading(true);
-    }
+  const handlePageChange = (page: number) => {
+    setCurrentPage(String(page));
   };
 
   const [savedSearch] = useLocalStorage();
 
   useEffect(() => {
     const search = searchParams.get('search');
-    const page = searchParams.get('page');
-    if (search) {
-      handleSearch(search);
-    } else if (page) {
-      handlePagination(Number(page));
-    } else {
-      handleSearch(savedSearch);
-    }
-  }, [savedSearch]);
+    const page = searchParams.get('page') ?? '1';
+    console.log(page, search, '****************************');
+    // setCurrentPage(page);
+    handleSearch(savedSearch);
+  }, [savedSearch, currentPage]);
 
   if (errorMsg) {
     return <p className="error">Error:{errorMsg}</p>;
@@ -66,7 +55,7 @@ export function MainPage() {
 
   const params = Boolean(searchParams.get('details'));
 
-  console.log(isLoading, response);
+  console.log(currentPage);
 
   return (
     <>
@@ -76,11 +65,12 @@ export function MainPage() {
         {isLoading && response ? (
           <>
             <Pagination
-              handlePagination={handlePagination}
-              response={response}
+              onPageChange={handlePageChange}
+              pageNumber={response.length}
+              currentPage={currentPage}
             />
             <div className="wrapper">
-              <CardList peopleList={response.results} />
+              <CardList peopleList={response} />
               {params && <Outlet />}
             </div>
           </>

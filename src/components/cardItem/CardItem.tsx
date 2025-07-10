@@ -1,30 +1,30 @@
 import './styles.css';
 import { People } from '../../types/types';
-import { getIdFromUrl } from '../../utils/utils';
 import { Link, useSearchParams } from 'react-router-dom';
 
 interface PeopleItem {
   people: People;
 }
 
-export function CardItem(props: PeopleItem) {
+export function CardItem({ people }: PeopleItem) {
   const [searchParams] = useSearchParams();
-
-  const { people } = props;
-  const id = getIdFromUrl(people.url);
-  const img = `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`;
 
   const getPath = (): string => {
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('details', id.toString());
+    newSearchParams.set('details', people.id);
     return `?${newSearchParams}`;
   };
+  console.log(people);
 
   return (
     <li className="card-container" key={people.name}>
       <Link to={getPath()}>
         <div className="wrapper-img">
-          <img className="card-img" src={img} alt={people.name} />
+          <img
+            className="card-img"
+            src={`/${people.id}.jpg`}
+            alt={people.name}
+          />
         </div>
         <p className="name">{people.name}</p>
       </Link>

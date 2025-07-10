@@ -23,14 +23,17 @@ export function Details({ character }: DetailsProps) {
       setSearchParams(`?search=${search}`);
     }
   };
-  const img = `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`;
 
   return (
     <>
       <div className="card-details" onClick={handleClick}>
         <h2 className="name">{character.name}</h2>
         <div className="wrapper-img-details">
-          <img className="img-details" src={img} alt={character.name} />
+          <img
+            className="img-details"
+            src={`/${id}.jpg`}
+            alt={character.name}
+          />
         </div>
         <p className="height">Height: {character.height}</p>
         <p className="mass">Mass: {character.mass}</p>
