@@ -8,3 +8,15 @@
   font-size: 4rem;
   padding: 10px;
 }
+
+.about {
+  font-size: 2rem;
+  margin-top: 20px;
+  color: white;
+   transition: 0.5s;
+}
+
+.about:hover {
+  color: gray;
+  transition: 0.5s;
+}

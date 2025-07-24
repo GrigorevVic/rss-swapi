@@ -1,0 +1,45 @@
+.containerAbout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.title {
+  font-size: 36px;
+  color: white;
+  margin: 30px;
+}
+
+.cardAbout {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.imageAbout {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.titleAbout {
+  font-size: 20px;
+  margin: 20px;
+  color: white;
+}
+.descriptionAbout {
+  font-size: 14px;
+  color: white;
+}
+
+.link {
+  text-decoration: none;
+  color: yellowgreen;
+  font-size: 2rem;
+  margin: 20px;
+}
