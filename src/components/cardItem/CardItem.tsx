@@ -11,7 +11,9 @@ export function CardItem({ people }: PeopleItem) {
 
   const getPath = (): string => {
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('details', people.id);
+    if (people.id) {
+      newSearchParams.set('details', people.id);
+    }
     return `?${newSearchParams}`;
   };
 

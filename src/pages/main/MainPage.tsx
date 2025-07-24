@@ -55,7 +55,7 @@ export function MainPage() {
 
   const params = Boolean(searchParams.get('details'));
 
-  const filtred = response?.filter((item, index) => {
+  const filtred = response?.filter((_item, index) => {
     return Math.ceil(Number(index + 1) / 10) === currentPage;
   });
 
