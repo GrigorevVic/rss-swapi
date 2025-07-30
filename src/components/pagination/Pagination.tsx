@@ -1,40 +1,39 @@
-import { ApiResponse } from '../../types/types';
-
-interface PaginationProps {
+interface handlePaginationProps {
+  onPageChange: (page: number) => void;
+  peopleNumber: number;
   currentPage: number;
-  onPageChange: (arg: number) => void;
-  response?: ApiResponse;
 }
 
-export const Pagination = ({
-  currentPage,
+export function Pagination({
   onPageChange,
-  response,
-}: PaginationProps) => {
-  const { previous, next } = response as ApiResponse;
-  const prevPage = previous ? new URL(previous).searchParams.get('page') : null;
-  const nextPage = next ? new URL(next).searchParams.get('page') : null;
-
-  const pageCount = response ? Math.ceil(response?.count / 10) : '?';
-
-  const handlePrevious = () => {
-    onPageChange(Number(prevPage));
+  peopleNumber,
+  currentPage,
+}: handlePaginationProps) {
+  const nextPage = () => {
+    onPageChange(Number(currentPage) + 1);
   };
 
-  const handleNext = () => {
-    onPageChange(Number(nextPage));
+  const prevPage = () => {
+    onPageChange(Number(currentPage) - 1);
   };
+
+  const pageNumber = Math.ceil(peopleNumber / 10);
+
   return (
     <div className="btn-container">
-      <button className="btn" onClick={handlePrevious} disabled={!previous}>
+      <button className="btn" onClick={prevPage} disabled={currentPage < 2}>
         Prev
       </button>
-      <span>
-        Page: {currentPage} / {pageCount}
-      </span>
-      <button className="btn" onClick={handleNext} disabled={!next}>
+      <div>
+        Page: {currentPage}/{pageNumber}
+      </div>
+      <button
+        className="btn"
+        onClick={nextPage}
+        disabled={currentPage > pageNumber - 1}
+      >
         Next
       </button>
     </div>
   );
-};
+}

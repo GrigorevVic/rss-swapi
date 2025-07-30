@@ -21,7 +21,6 @@ export const api = createApi({
 export const { useGetCharactersQuery, useGetCharacterByIdQuery } = api;
 
 export const searched = (search: string, data: People[]) => {
-  console.log(data);
   const searched = data.filter((item: People) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );

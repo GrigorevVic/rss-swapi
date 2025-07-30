@@ -25,11 +25,11 @@ export function MainPage() {
       : `?page=${currentPage}`;
     setSearchParams(queryString);
   };
-  /*
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-*/
+
   const handleSearchChange = (search: string) => {
     setCurrentPage(1);
     setSavedSearch(search);
@@ -42,24 +42,15 @@ export function MainPage() {
       setResponse(filtredData);
     }
   }, [savedSearch, currentPage, isFetching]);
-  /*
-  useEffect(() => {
-    if (savedSearch) {
-      setSearchParams(`?search=${savedSearch}&page=${currentPage}`);
-    } else {
-      setSearchParams(`?page=${currentPage}`);
-    }
-  }, [currentPage, savedSearch]);
-  
-  const handleSearch = (term: string) => {
-    setSavedSearch(term);
-    setCurrentPage(1);
-  };
-*/
+
   if (isError) {
     return <p className="error">Error</p>;
   }
   const isDetails = Boolean(searchParams.get('details'));
+
+  const filtred = response?.filter((_item, index) => {
+    return Math.ceil(Number(index + 1) / 10) === currentPage;
+  });
 
   return (
     <>
@@ -67,15 +58,15 @@ export function MainPage() {
       <ThemeToggler />
       <main className="main">
         <SearchForm handleSearch={handleSearchChange} />
-        {!isFetching ? (
+        {!isFetching && response ? (
           <>
             <Pagination
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
+              peopleNumber={response.length}
               currentPage={currentPage}
-              response={data}
             />
             <div className="wrapper">
-              <CardList peopleList={response} />
+              <CardList peopleList={filtred} />
               {isDetails && <Outlet />}
             </div>
           </>
