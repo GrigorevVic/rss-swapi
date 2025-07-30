@@ -1,6 +1,5 @@
 import './styles.css';
 import { People } from '../../types/types';
-import { getIdFromUrl } from '../../utils/utils';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -13,8 +12,7 @@ import type { RootState } from '../../store/store';
 interface PeopleItem {
   people: People;
 }
-export function CardItem(props: PeopleItem) {
-  const { people } = props;
+export function CardItem({ people }: PeopleItem) {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
 
@@ -22,11 +20,11 @@ export function CardItem(props: PeopleItem) {
     useSelector((state: RootState) => selectById(state, people.name))
   );
 
-  const id = getIdFromUrl(people.url);
-
   const getPath = (): string => {
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('details', id.toString());
+    if (people.id) {
+      newSearchParams.set('details', people.id);
+    }
     return `?${newSearchParams}`;
   };
 
@@ -44,7 +42,11 @@ export function CardItem(props: PeopleItem) {
     <li className="card-container" key={people.name}>
       <Link to={getPath()}>
         <div className="wrapper-img">
-          <img className="card-img" src={`/${id}.jpg`} alt={people.name} />
+          <img
+            className="card-img"
+            src={`/${people.id}.jpg`}
+            alt={people.name}
+          />
         </div>
         <p className="name">{people.name}</p>
       </Link>

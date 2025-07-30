@@ -8,18 +8,41 @@ import { useSearchParams, Outlet } from 'react-router-dom';
 import { Loader } from '../../components/loader/Loader';
 import { Header } from '../../components/header/Header';
 import { Footer } from '../../components/footer/Footer';
-import { useGetCharactersQuery } from '../../api/api';
+import { useGetCharactersQuery, searched } from '../../api/api';
 import { ThemeToggler } from '../../components/themeToggler/themeToggler';
+import { People } from '../../types/types';
 
 export function MainPage() {
+  const [response, setResponse] = useState<People[]>();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [savedSearch, setSavedSearch] = useLocalStorage();
-  const { data, isError, isFetching } = useGetCharactersQuery({
-    search: savedSearch,
-    page: currentPage,
-  });
+  const { data, isError, isFetching } = useGetCharactersQuery({});
 
+  const handleSearch = async (search: string) => {
+    const queryString = search
+      ? `?page=${currentPage}&search=${search}`
+      : `?page=${currentPage}`;
+    setSearchParams(queryString);
+  };
+  /*
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+*/
+  const handleSearchChange = (search: string) => {
+    setCurrentPage(1);
+    setSavedSearch(search);
+  };
+
+  useEffect(() => {
+    handleSearch(savedSearch);
+    if (!isFetching) {
+      const filtredData = searched(savedSearch, data);
+      setResponse(filtredData);
+    }
+  }, [savedSearch, currentPage, isFetching]);
+  /*
   useEffect(() => {
     if (savedSearch) {
       setSearchParams(`?search=${savedSearch}&page=${currentPage}`);
@@ -27,12 +50,12 @@ export function MainPage() {
       setSearchParams(`?page=${currentPage}`);
     }
   }, [currentPage, savedSearch]);
-
+  
   const handleSearch = (term: string) => {
     setSavedSearch(term);
     setCurrentPage(1);
   };
-
+*/
   if (isError) {
     return <p className="error">Error</p>;
   }
@@ -43,7 +66,7 @@ export function MainPage() {
       <Header />
       <ThemeToggler />
       <main className="main">
-        <SearchForm handleSearch={handleSearch} />
+        <SearchForm handleSearch={handleSearchChange} />
         {!isFetching ? (
           <>
             <Pagination
@@ -52,7 +75,7 @@ export function MainPage() {
               response={data}
             />
             <div className="wrapper">
-              <CardList peopleList={data?.results} />
+              <CardList peopleList={response} />
               {isDetails && <Outlet />}
             </div>
           </>

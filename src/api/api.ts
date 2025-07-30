@@ -1,17 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { People } from '../types/types';
 
-const baseUrl = 'https://swapi.dev/api/people';
+const baseUrl = 'https://swapi-server.vercel.app/people';
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (build) => ({
     getCharacters: build.query({
-      query: ({ page = 1, search }) => {
-        const queryString = search
-          ? `search=${search}&page=${String(page)}`
-          : `page=${String(page)}`;
-        return `?${queryString}`;
+      query: () => {
+        return ``;
       },
     }),
     getCharacterById: build.query({
@@ -21,3 +19,11 @@ export const api = createApi({
 });
 
 export const { useGetCharactersQuery, useGetCharacterByIdQuery } = api;
+
+export const searched = (search: string, data: People[]) => {
+  console.log(data);
+  const searched = data.filter((item: People) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+  return searched;
+};
