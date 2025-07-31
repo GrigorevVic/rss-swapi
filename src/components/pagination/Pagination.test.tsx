@@ -1,101 +1,85 @@
 import '@testing-library/jest-dom';
-import { describe, expect, test } from 'vitest';
+
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { describe, it, expect, vi } from 'vitest';
 import { Pagination } from './Pagination';
-import { ApiResponse } from '../../types/types';
 
 describe('Pagination Component', () => {
-  test('renders next and prev buttons', () => {
-    const currentPage = 1;
-    const response: ApiResponse = {
-      count: 82,
-      previous: 'http://example.com/api/characters?page=1',
-      next: 'http://example.com/api/characters?page=3',
-      results: [],
-    };
+  const onPageChangeMock = vi.fn();
 
+  it('renders correctly with provided props', () => {
     render(
-      <MemoryRouter>
-        <Pagination
-          currentPage={currentPage}
-          response={response}
-          onPageChange={() => {}}
-        />
-      </MemoryRouter>
+      <Pagination
+        onPageChange={onPageChangeMock}
+        peopleNumber={45}
+        currentPage={1}
+      />
     );
 
-    expect(screen.getByText('Prev')).toBeInTheDocument();
-    expect(screen.getByText('Next')).toBeInTheDocument();
+    expect(screen.getByText(/Page: 1\/5/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /prev/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
   });
 
-  test('disables prev button', () => {
-    const currentPage = 1;
-    const response: ApiResponse = {
-      count: 82,
-      previous: null,
-      next: 'https://swapi.dev/api/people/?page=2',
-      results: [],
-    };
-
+  it('calls onPageChange with the correct value when next button is clicked', () => {
     render(
-      <MemoryRouter>
-        <Pagination
-          currentPage={currentPage}
-          response={response}
-          onPageChange={() => {}}
-        />
-      </MemoryRouter>
+      <Pagination
+        onPageChange={onPageChangeMock}
+        peopleNumber={45}
+        currentPage={1}
+      />
     );
 
-    expect(screen.getByText('Prev')).toBeDisabled();
-    expect(screen.getByText('Next')).not.toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+    expect(onPageChangeMock).toHaveBeenCalledWith(2);
   });
 
-  test('disables next button', () => {
-    const currentPage = 8;
-    const response: ApiResponse = {
-      count: 82,
-      previous: 'https://swapi.dev/api/people/?page=8',
-      next: null,
-      results: [],
-    };
-
+  it('calls onPageChange with the correct value when prev button is clicked', () => {
     render(
-      <MemoryRouter>
-        <Pagination
-          currentPage={currentPage}
-          response={response}
-          onPageChange={() => {}}
-        />
-      </MemoryRouter>
+      <Pagination
+        onPageChange={onPageChangeMock}
+        peopleNumber={45}
+        currentPage={2}
+      />
     );
 
-    expect(screen.getByText('Prev')).not.toBeDisabled();
-    expect(screen.getByText('Next')).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: /prev/i }));
+    expect(onPageChangeMock).toHaveBeenCalledWith(1);
   });
 
-  test('click next button', () => {
-    const currentPage = 1;
-    const response: ApiResponse = {
-      count: 82,
-      previous: null,
-      next: 'https://swapi.dev/api/people/?page=2',
-      results: [],
-    };
-
+  it('disables the prev button on the first page', () => {
     render(
-      <MemoryRouter>
-        <Pagination
-          currentPage={currentPage}
-          response={response}
-          onPageChange={() => {}}
-        />
-      </MemoryRouter>
+      <Pagination
+        onPageChange={onPageChangeMock}
+        peopleNumber={45}
+        currentPage={1}
+      />
     );
 
-    const nextButton = screen.getByText('Next');
-    fireEvent.click(nextButton);
-    expect(screen.getByText('Page: 1 / 9')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /prev/i })).toBeDisabled();
+  });
+
+  it('disables the next button on the last page', () => {
+    render(
+      <Pagination
+        onPageChange={onPageChangeMock}
+        peopleNumber={45}
+        currentPage={5}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
+  });
+
+  it('shows the correct page number when total peopleNumber changes', () => {
+    render(
+      <Pagination
+        onPageChange={onPageChangeMock}
+        peopleNumber={20}
+        currentPage={1}
+      />
+    );
+
+    expect(screen.getByText(/Page: 1\/2/i)).toBeInTheDocument();
   });
 });

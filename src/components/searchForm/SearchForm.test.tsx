@@ -1,32 +1,43 @@
 import '@testing-library/jest-dom';
-import { beforeEach, describe, expect, test } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import { SearchForm } from './SearchForm';
 
-describe('SearchForm Component', () => {
+describe('SearchForm', () => {
+  const handleSearchMock = vi.fn();
+
   beforeEach(() => {
-    localStorage.clear();
+    render(<SearchForm handleSearch={handleSearchMock} />);
   });
 
-  test('saving the entered value to localstorage', () => {
-    const fakeName = 'FakeName';
-    render(<SearchForm handleSearch={() => {}} />);
-    const searchButton = screen.getByText('Search');
-    const inputElement = screen.getByPlaceholderText(
-      'Enter a character name...'
-    );
-    fireEvent.change(inputElement, { target: { value: fakeName } });
-    fireEvent.click(searchButton);
-    expect(localStorage.getItem('searchString')).toBe(fakeName);
+  it('renders the search input and button', () => {
+    expect(
+      screen.getByPlaceholderText(/enter a character name.../i)
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
-  test('test click button-Error', () => {
-    render(<SearchForm handleSearch={() => {}} />);
-    const errorButton = screen.getByText('Error');
-    try {
-      fireEvent.click(errorButton);
-    } catch (error) {
-      expect(error).toEqual(new Error('An error has occurred'));
-    }
+  it('updates the input value on change', () => {
+    const input = screen.getByPlaceholderText(/enter a character name.../i);
+    fireEvent.change(input, { target: { value: 'Luke Skywalker' } });
+
+    expect(input).toHaveValue('Luke Skywalker');
+  });
+
+  it('calls handleSearch with the input value on form submit', () => {
+    const input = screen.getByPlaceholderText(/enter a character name.../i);
+    fireEvent.change(input, { target: { value: 'Darth Vader' } });
+    fireEvent.submit(screen.getByRole('form'));
+
+    expect(handleSearchMock).toHaveBeenCalledWith('Darth Vader');
+    expect(handleSearchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('trims the input value before calling handleSearch', () => {
+    const input = screen.getByPlaceholderText(/enter a character name.../i);
+    fireEvent.change(input, { target: { value: '  Luke Skywalker  ' } });
+    fireEvent.submit(screen.getByRole('form'));
+
+    expect(handleSearchMock).toHaveBeenCalledWith('Luke Skywalker');
   });
 });
