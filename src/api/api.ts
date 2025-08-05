@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = 'https://swapi.dev/api/people';
+const baseUrl = 'https://swapi.py4e.com/api/people';
 
 export const api = createApi({
   reducerPath: 'api',
