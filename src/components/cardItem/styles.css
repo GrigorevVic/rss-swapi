@@ -1,0 +1,54 @@
+.card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border-shadow);
+  border-radius: 20px;
+  background-color: var(--transparent-dark);
+  padding: 10px;
+  min-width: 200px;
+  cursor: pointer;
+  color: var(--main-light);
+  margin: 6px;
+  transition: 0.5s;
+  opacity: 0.8;
+}
+
+.card-container:hover {
+  background-color: var(--transparent-dark-hover);
+  box-shadow: 3px 3px 3px 3px var(--border-shadow);
+  transition: 0.5s;
+  opacity: 1;
+}
+
+.card-container p:not(:first-child) {
+  font-size: 1.5rem;
+  padding: 5px;
+}
+
+.name {
+  font-size: 2rem;
+  padding: 10px;
+  color: var(--main-light);
+}
+
+.wrapper-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  overflow: hidden;
+}
+
+.card-img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  border-radius: 10%;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+}
